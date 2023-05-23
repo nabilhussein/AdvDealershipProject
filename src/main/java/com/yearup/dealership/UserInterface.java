@@ -1,13 +1,17 @@
 package com.yearup.dealership;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserInterface {
+    public static boolean finance;
     private DealershipFileManager fileManager;
 
     Dealership dealership;
+    Contract contract;
+
 
     private void init() {
         fileManager = new DealershipFileManager("inventory.csv");
@@ -59,9 +63,24 @@ public class UserInterface {
     }
 
     private void processSellOrLeaseVehicle() {
+        LocalDate date = LocalDate.now();
+        System.out.println("What is your full name?");
+        String customerName = scanner.nextLine();
+        System.out.println("What is your email address?");
+        String customerEmail = scanner.nextLine();
 
-
+        SalesContract salesContract = new SalesContract(date, customerName, customerEmail, contract.getVehicleSold());
+        String financeOrNot;
+        System.out.println("Do you want to finance the car? (y/n)");
+        financeOrNot = scanner.nextLine().toLowerCase();
+        boolean finance = financeOrNot.equals("y"); // Use a boolean variable to store the finance choice
+        double monthlyPayment = salesContract.getMonthlyPayment();
+        if (finance) { // No need to compare with true, as finance itself is a boolean
+            System.out.println("Your monthly payment is " + monthlyPayment);
+        }
     }
+
+
 
     public void processGetByPriceRequest() {
         System.out.print("Enter minimum price: ");

@@ -1,27 +1,30 @@
 package com.yearup.dealership;
 
 
+import java.time.LocalDate;
+
 public class LeaseContract extends Contract {
 
-    public LeaseContract(String date, String customerName, String customerEmail, Vehicle vehicle) {
-        super(date, customerName, customerEmail, vehicle);
-
-
+    public LeaseContract(LocalDate date, String customerName, String customerEmail, Vehicle vehicleSold) {
+        super(date, customerName, customerEmail, vehicleSold);
     }
 
     @Override
-    public double getTotalPrice() {
-        return 0;
-    }
-
-    @Override
-    public double getMonthlyPayment() {
-        return 0;
-    }
-
-    @Override
-    public String getPersistenceString() {
+    String getPersistanceString(Contract contract) {
         return null;
     }
-}
 
+    @Override
+    double getTotalPrice() {
+        double vehiclePrice = 0;
+        double totalPrice = 0;
+        vehiclePrice = vehicleSold.getPrice();
+        totalPrice = vehiclePrice + (vehiclePrice * 0.07);
+        return totalPrice;
+    }
+
+    @Override
+    double getMonthlyPayment() {
+        return monthlyPayment;
+    }
+}

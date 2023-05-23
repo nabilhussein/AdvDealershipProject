@@ -1,56 +1,65 @@
 package com.yearup.dealership;
 
 
+import java.time.LocalDate;
+
 public abstract class Contract {
 
-    private String date;
-    private String customerName;
-    private String customerEmail;
-    private Vehicle vehicle;
+     LocalDate Date;
+    String customerName;
+    String customerEmail;
+    Vehicle vehicleSold;
+    double price;
+    double monthlyPayment;
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public void setCustomerName(String customerName) {
+    public Contract(LocalDate date, String customerName, String customerEmail, Vehicle vehicleSold) {
+        Date = date;
         this.customerName = customerName;
-    }
-
-    public void setCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
+        this.vehicleSold = vehicleSold;
     }
 
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
+    public Contract() {
+
     }
 
-    public Contract(String date, String customer_name, String customer_email, Vehicle vehicle) {
-        this.date = date;
-        this.customerName = customer_name;
-        this.customerEmail = customer_email;
-        this.vehicle = vehicle;
+    public LocalDate getDate() {
+        return Date;
     }
 
-    public abstract double getTotalPrice();
-
-    public abstract double getMonthlyPayment();
-
-    public abstract String getPersistenceString();
-
-    public String getDate() {
-        return date;
+    public void setDate(LocalDate date) {
+        Date = date;
     }
 
     public String getCustomerName() {
         return customerName;
     }
 
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
     public String getCustomerEmail() {
         return customerEmail;
     }
 
-    public Vehicle getVehicle() {
-        return vehicle;
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
     }
+
+    public Vehicle getVehicleSold() {
+        return vehicleSold;
+    }
+
+    public void setVehicleSold(Vehicle vehicleSold) {
+        this.vehicleSold = vehicleSold;
+    }
+
+    abstract String getPersistanceString(Contract contract);
+
+    abstract double getTotalPrice();
+
+    abstract double getMonthlyPayment();
+
 }
 
