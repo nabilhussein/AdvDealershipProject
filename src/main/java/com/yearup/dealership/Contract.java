@@ -1,34 +1,23 @@
 package com.yearup.dealership;
-
-
-import java.time.LocalDate;
-
 public abstract class Contract {
+    private String contractDate;
+    private String customerName;
+    private String customerEmail;
+    private Vehicle vehicleSold;
 
-     LocalDate Date;
-    String customerName;
-    String customerEmail;
-    Vehicle vehicleSold;
-    double price;
-    double monthlyPayment;
-
-    public Contract(LocalDate date, String customerName, String customerEmail, Vehicle vehicleSold) {
-        Date = date;
+    public Contract(String contractDate, String customerName, String customerEmail, Vehicle vehicleSold) {
+        this.contractDate = contractDate;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.vehicleSold = vehicleSold;
     }
 
-    public Contract() {
-
+    public String getContractDate() {
+        return contractDate;
     }
 
-    public LocalDate getDate() {
-        return Date;
-    }
-
-    public void setDate(LocalDate date) {
-        Date = date;
+    public void setContractDate(String contractDate) {
+        this.contractDate = contractDate;
     }
 
     public String getCustomerName() {
@@ -55,11 +44,10 @@ public abstract class Contract {
         this.vehicleSold = vehicleSold;
     }
 
-    abstract String getPersistanceString(Contract contract);
+    public abstract double getTotalPrice();
 
-    abstract double getTotalPrice();
+    public abstract double getMonthlyPayment();
 
-    abstract double getMonthlyPayment();
-
+    public abstract String getPersistenceString();
 }
 

@@ -12,15 +12,19 @@ public class DealershipFileManager {
     public DealershipFileManager(String fileName) {
         this.fileName = fileName;
     }
+    // Method for retrieving the dealership information from a file
     public Dealership getDealership() {
+        // Create a new Dealership object with default values
         Dealership dealership = new Dealership("Car dealership", "Hillsida", "347-8374-1234");;
 
         try (FileReader fileReader = new FileReader(fileName);
              BufferedReader bufReader = new BufferedReader(fileReader)) {
 
             String input;
+            // Read each line from the file
             while ((input = bufReader.readLine()) != null) {
                 if (!input.isEmpty()) {
+                    // Split the line by "|" delimiter to extract vehicle information
                     String[] parts = input.split("\\|");
                     int vin = Integer.parseInt(parts[0]);
                     int year = Integer.parseInt(parts[1]);
@@ -31,16 +35,20 @@ public class DealershipFileManager {
                     int odometer = Integer.parseInt(parts[6]);
                     double price = Double.parseDouble(parts[7]);
 
+                    // Create a new Vehicle object with extracted information
                     Vehicle vehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
+                    // Add the vehicle to the dealership's inventory
                     dealership.addVehicle(vehicle);
                 }
             }
         } catch (IOException e) {
+            // Handle any IOException that occurs while reading the inventory file
             System.err.println("Error reading inventory file: ");
         }
-
+        // Return the populated dealership object
             return dealership;
         }
+
 
     public void saveDealership(Dealership dealership) {
 

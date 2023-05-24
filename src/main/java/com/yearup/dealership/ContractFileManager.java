@@ -1,28 +1,30 @@
 package com.yearup.dealership;
 
-import java.io.BufferedWriter;
+
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class ContractFileManager {
-    public void saveContract(Contract contract) {
-        FileWriter fileWriter = null;
-        try {
-            fileWriter = new FileWriter("contracts.csv");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    private String fileName;
 
-        String contractInfo;
-        contractInfo = String.format("%s|%s|%s|%s|%d|%d\n", contract.getDate(), contract.getCustomerName(), contract.getCustomerEmail(),
-                contract.getVehicleSold(), contract.getTotalPrice(), contract.getMonthlyPayment());
-        try {
-            fileWriter.write(contract.getPersistanceString(contract));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public ContractFileManager(String fileName) {
+        this.fileName = fileName;
     }
 
+    // Method for saving a contract to a file
+    public void saveContract(Contract contract) {
+        try (FileWriter writer = new FileWriter(fileName, true)) {
+            // Write the contract's persistence string to the file
+            writer.write(contract.getPersistenceString() + "\n");
+            System.out.println("Contract saved successfully.");
+        } catch (IOException e) {
+            // Handle any IOException that occurs while saving the contract
+            System.err.println("Error saving contract: " + e.getMessage());
+        }
+    }
 }
+
+
+
 
 

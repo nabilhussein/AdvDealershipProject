@@ -1,89 +1,94 @@
 package com.yearup.dealership;
-
-import java.time.LocalDate;
-
 public class SalesContract extends Contract {
-    private int processingFee;
-    private double salesTax;
-    public SalesContract(LocalDate date, String customerName, String customerEmail, Vehicle vehicleSold) {
-        super(date, customerName, customerEmail, vehicleSold);
+    private final double salesTaxRate = 0.05;
+    private final double recordingFee = 100.00;
+    private double processingFee;
+    private boolean financeOption;
+
+    public SalesContract(String contractDate, String customerName, String customerEmail, Vehicle vehicleSold,
+                         double v, double parseDouble, double aDouble, boolean financeOption) {
+        super(contractDate, customerName, customerEmail, vehicleSold);
+        this.processingFee = (vehicleSold.getPrice() < 10000) ? 295.00 : 495.00;
+        this.financeOption = financeOption;
+    }
+
+    public double getSalesTaxAmount() {
+        return getVehicleSold().getPrice() * salesTaxRate;
+    }
+
+    public double getRecordingFee() {
+        return recordingFee;
+    }
+
+    public double getProcessingFee() {
+        return processingFee;
+    }
+
+    public void setProcessingFee(double processingFee) {
+        this.processingFee = processingFee;
+    }
+
+    public boolean isFinanceOption() {
+        return financeOption;
+    }
+
+    public void setFinanceOption(boolean financeOption) {
+        this.financeOption = financeOption;
     }
 
     @Override
-    String getPersistanceString(Contract contract) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("SALE|").append(contract.getDate()).append("|")
-                .append(contract.getCustomerName()).append("|")
-                .append(contract.getCustomerEmail()).append("|")
-                .append(contract.getVehicleSold()).append("|")
-                .append(contract.getTotalPrice()).append("|")
-                .append(contract.getMonthlyPayment()).append("|")
-                .append("100|")
-                .append(getProcessingFee()).append("|")
-                .append(getSalesTax()).append("|")
-                .append(getVehicleSold()).append("|")
-                .append(getMonthlyPayment()).append("|");
-        return sb.toString();
-    }
-
-
-    @Override
-    double getTotalPrice() {
-        double vehiclePrice = 0;
-        double totalPrice = 0;
-        vehiclePrice = vehicleSold.getPrice();
-        salesTax = vehiclePrice * 0.05; // for getSalesTax method
-        // this is the processing fee
-        if(vehiclePrice < 10000) {
-            totalPrice = vehiclePrice + 295;
-            processingFee = 295; // for getProcessingFee method
-        } else {
-            totalPrice = vehiclePrice + 495;
-            processingFee = 495; // for getProcessingFee method
-        }
-        totalPrice = totalPrice + 100; // recording fee
-        totalPrice = totalPrice + (vehiclePrice * 0.05); // sales tax
-
-
+    public double getTotalPrice() {
+        double vehiclePrice = getVehicleSold().getPrice();
+        double totalPrice = vehiclePrice + getSalesTaxAmount() + recordingFee + processingFee;
         return totalPrice;
     }
 
-    int getProcessingFee() {
-        return processingFee;
-    }
-    double getSalesTax() {
-        return salesTax;
-    }
     @Override
-    double getMonthlyPayment() {
-        double vehiclePrice = vehicleSold.getPrice();
-        double p = vehiclePrice;
-        double r;
-        double n;
-        double t;
-        boolean finance;
-        double payment = 0;
-        if (UserInterface.finance == true) {
+    public double getMonthlyPayment() {
+        if (financeOption) {
+            double vehiclePrice = getVehicleSold().getPrice();
             if (vehiclePrice >= 10000) {
-                r = 0.0425;
-                t = 4;
-                n = 12;
+                double interestRate = 0.0425;
+                int loanTerm = 48;
+                double monthlyInterestRate = interestRate / 12;
+                double loanAmount = vehiclePrice;
+                double monthlyPayment = (loanAmount * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -loanTerm));
+                return monthlyPayment;
             } else {
-                r = 0.0525;
-                t = 2;
-                n = 12;
+                double interestRate = 0.0525;
+                int loanTerm = 24;
+                double monthlyInterestRate = interestRate / 12;
+                double loanAmount = vehiclePrice;
+                double monthlyPayment = (loanAmount * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -loanTerm));
+                return monthlyPayment;
             }
-
-            double rOverN = r / n;
-            double numerator = p * rOverN;
-            double onePlusROverN = 1 + rOverN;
-            double power = -t * n;
-            double denominator = 1 - Math.pow(onePlusROverN, power);
-            payment = numerator / denominator;
-
         } else {
-            payment = 0.00;
+            return 0.0;
         }
-        return payment;
+    }
+
+    @Override
+    public String getPersistenceString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("SALE").append("|");
+        builder.append(getContractDate()).append("|");
+        builder.append(getCustomerName()).append("|");
+        builder.append(getCustomerEmail()).append("|");
+        builder.append(getVehicleSold().getVin()).append("|");
+        builder.append(getVehicleSold().getYear()).append("|");
+        builder.append(getVehicleSold().getMake()).append("|");
+        builder.append(getVehicleSold().getModel()).append("|");
+        builder.append(getVehicleSold().getVehicleType()).append("|");
+        builder.append(getVehicleSold().getColor()).append("|");
+        builder.append(getVehicleSold().getOdometer()).append("|");
+        builder.append(getVehicleSold().getPrice()).append("|");
+        builder.append(getSalesTaxAmount()).append("|");
+        builder.append(getRecordingFee()).append("|");
+        builder.append(getProcessingFee()).append("|");
+        builder.append(getTotalPrice()).append("|");
+        builder.append(isFinanceOption() ? "YES" : "NO").append("|");
+        builder.append(getMonthlyPayment()).append("|");
+
+        return builder.toString();
     }
 }
