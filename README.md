@@ -21,3 +21,14 @@ The dealership management system provides the following functionality:
 - Adding a new vehicle to the dealership inventory.
 - Removing a vehicle from the dealership inventory.
 - Creating sales or lease contracts for vehicles.
+
+### Preview 
+![Home](https://github.com/nabilhussein/AdvDealershipProject/assets/55296823/678c5512-ad74-4082-b832-7f4726c72cd0)
+![1](https://github.com/nabilhussein/AdvDealershipProject/assets/55296823/d02600f5-cfe5-463b-b3a0-8c9fcd3420a5)
+![allVeicle](https://github.com/nabilhussein/AdvDealershipProject/assets/55296823/476742ab-e958-416a-b24f-8b0a4a79073b)
+![sales](https://github.com/nabilhussein/AdvDealershipProject/assets/55296823/3bcdbf30-2901-4e11-b9e7-a764c60cb514)
+### One interesting code
+![Screenshot 2023-05-24 code](https://github.com/nabilhussein/AdvDealershipProject/assets/55296823/42b3479b-3879-4c37-bdd0-240fdb5442ce)
+ 
+ This code is interesting because it's run the whole project, 
+  without this code we cannot run this project.
